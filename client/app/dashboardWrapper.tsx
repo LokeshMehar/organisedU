@@ -1,4 +1,5 @@
 
+import Navbar from "@/components/Navbar";
 import React from "react";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
@@ -10,8 +11,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <main
         className={`flex w-full flex-col bg-gray-50 dark:bg-dark-bg md:pl-64`}
       >
-        Navbar
-        {/* <Navbar /> */}
+        <Navbar />
         {children}
       </main>
     </div>

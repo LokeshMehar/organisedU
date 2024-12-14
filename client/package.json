@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mui/x-data-grid": "^7.23.2",
+    "lucide-react": "^0.468.0",
     "next": "^14.2.20",
     "react": "^18",
     "react-dom": "^18"
