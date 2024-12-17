@@ -10,6 +10,7 @@ import taskRoutes from "./routes/taskRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import userRoutes from "./routes/userRoutes";
 import teamRoutes from "./routes/teamRoutes";
+import { log } from "console";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -35,6 +36,8 @@ app.use("/teams", teamRoutes);
 
 /* SERVER */
 const port = Number(process.env.PORT) || 3000;
+
+log("PORT", port);
 app.listen(port, "0.0.0.0", () => {
   console.log(`Backend running on port : ${port}`);
 });
