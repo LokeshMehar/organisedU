@@ -17,7 +17,7 @@ const TaskCard = ({ task }: Props) => {
           <div className="flex flex-wrap">
             {task.attachments && task.attachments.length > 0 && (
               <Image
-                src="./logo.png"
+                src="/logo.png"
                 alt={task.attachments[0].fileName}
                 width={400}
                 height={200}
