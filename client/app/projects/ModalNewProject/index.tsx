@@ -16,25 +16,45 @@ const ModalNewProject = ({ isOpen, onClose }: Props) => {
   const [endDate, setEndDate] = useState("");
 
   const handleSubmit = async () => {
-    if (!projectName || !startDate || !endDate) return;
+    // Validate the form inputs
+    if (!isFormValid()) return;
 
-    const formattedStartDate = formatISO(new Date(startDate), {
-      representation: "complete",
-    });
-    const formattedEndDate = formatISO(new Date(endDate), {
-      representation: "complete",
-    });
+    try {
+      const formattedStartDate = formatISO(new Date(startDate), {
+        representation: "complete",
+      });
+      const formattedEndDate = formatISO(new Date(endDate), {
+        representation: "complete",
+      });
 
-    await createProject({
-      name: projectName,
-      description,
-      startDate: formattedStartDate,
-      endDate: formattedEndDate,
-    });
+      await createProject({
+        name: projectName.trim(),
+        description: description.trim(),
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      });
+
+      // Reset form fields and close the modal on success
+      setProjectName("");
+      setDescription("");
+      setStartDate("");
+      setEndDate("");
+      onClose();
+    } catch (error) {
+      console.error("Error creating project:", error);
+    }
   };
 
   const isFormValid = () => {
-    return projectName && description && startDate && endDate;
+    // Validate form fields and ensure valid dates
+    return (
+      projectName.trim() &&
+      description.trim() &&
+      startDate &&
+      !isNaN(new Date(startDate).getTime()) &&
+      endDate &&
+      !isNaN(new Date(endDate).getTime())
+    );
   };
 
   const inputStyles =
@@ -49,6 +69,7 @@ const ModalNewProject = ({ isOpen, onClose }: Props) => {
           handleSubmit();
         }}
       >
+        {/* Project Name Input */}
         <input
           type="text"
           className={inputStyles}
@@ -56,12 +77,16 @@ const ModalNewProject = ({ isOpen, onClose }: Props) => {
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
         />
+
+        {/* Description Input */}
         <textarea
           className={inputStyles}
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+
+        {/* Start Date and End Date Inputs */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-2">
           <input
             type="date"
@@ -76,6 +101,8 @@ const ModalNewProject = ({ isOpen, onClose }: Props) => {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
           className={`focus-offset-2 mt-4 flex w-full justify-center rounded-md border border-transparent bg-blue-primary px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
