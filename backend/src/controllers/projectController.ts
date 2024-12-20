@@ -22,15 +22,23 @@ export const createProject = async (
   res: Response
 ): Promise<void> => {
   const { name, description, startDate, endDate } = req.body;
+
   try {
+    // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
+    const parseDate = (date: string) => {
+      const [day, month, year] = date.split("-");
+      return `${year}-${month}-${day}`;
+    };
+
     const newProject = await prisma.project.create({
       data: {
         name,
         description,
-        startDate,
-        endDate,
+        startDate: new Date(parseDate(startDate)).toISOString(),
+        endDate: new Date(parseDate(endDate)).toISOString(),
       },
     });
+
     res.status(201).json(newProject);
   } catch (error: any) {
     res

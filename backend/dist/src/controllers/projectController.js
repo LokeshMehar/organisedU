@@ -27,12 +27,17 @@ exports.getProjects = getProjects;
 const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, description, startDate, endDate } = req.body;
     try {
+        // Convert "DD-MM-YYYY" to "YYYY-MM-DD"
+        const parseDate = (date) => {
+            const [day, month, year] = date.split("-");
+            return `${year}-${month}-${day}`;
+        };
         const newProject = yield prisma.project.create({
             data: {
                 name,
                 description,
-                startDate,
-                endDate,
+                startDate: new Date(parseDate(startDate)).toISOString(),
+                endDate: new Date(parseDate(endDate)).toISOString(),
             },
         });
         res.status(201).json(newProject);
