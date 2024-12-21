@@ -54,3 +54,21 @@ export const postUser = async (req: Request, res: Response) => {
       .json({ message: `Error retrieving users: ${error.message}` });
   }
 };
+
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  const { cognitoId } = req.params;
+  try {
+    await prisma.user.delete({
+      where: {
+        cognitoId: cognitoId,
+      },
+    });
+    res.json({ message: "User Deleted Successfully" });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error deleting user: ${error.message}` });
+  }
+};
+
+
