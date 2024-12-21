@@ -72,3 +72,25 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
 };
 
 
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
+  const { cognitoId } = req.params;
+  const { username, profilePictureUrl, teamId } = req.body;
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        cognitoId: cognitoId,
+      },
+      data: {
+        username,
+        profilePictureUrl,
+        teamId,
+      },
+    });
+    res.json({ message: "User Updated Successfully", updatedUser });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error updating user: ${error.message}` });
+  }
+};
+
